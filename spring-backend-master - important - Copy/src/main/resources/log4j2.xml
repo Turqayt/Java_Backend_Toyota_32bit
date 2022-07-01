@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+	<Appenders>
+		<Console name="LogToConsole" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="RollingFileAppender"
+			fileName="Logs/application.log"
+			filePattern="Logs/application.%d{yyyy-MM-dd-hh-mm}.zip">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd hh-mm-ss} %-5p %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="500MB" />
+				<TimeBasedTriggeringPolicy interval="1" />
+				<OnStartupTriggeringPolicy />
+			</Policies>
+			<DefaultRolloverStrategy max="5" />
+		</RollingFile>
+		<SMTP name="MailAppender" subject="Fatal Log"
+			to="errors@logging.apache.org" from="test@logging.apache.org"
+			smtpHost="localhost" smtpPort="25" bufferSize="50">
+		</SMTP>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.j32bit" level="debug" additivity="false">
+			<AppenderRef ref="RollingFileAppender" />
+			<AppenderRef ref="LogToConsole" />
+
+		</Logger>
+<!-- 		<Logger name="org.springframework.boot" level="error" -->
+<!-- 			additivity="false"> -->
+<!-- 			<AppenderRef ref="LogToConsole" /> -->
+<!-- 		</Logger> -->
+<!-- 		<Logger name="org.springframework" level="error" -->
+<!-- 			additivity="false"> -->
+<!-- 			<AppenderRef ref="LogToConsole" /> -->
+<!-- 		</Logger> -->
+		<Logger name="com.zaxxer.hikari" level="error"
+			additivity="false">
+			<AppenderRef ref="LogToConsole" />
+		</Logger>
+<!-- 		<Logger name="org.hibernate" level="error" additivity="false"> -->
+<!-- 			<AppenderRef ref="LogToConsole" /> -->
+<!-- 		</Logger> -->
+		<Root level="DEBUG">
+			<AppenderRef ref="LogToFile" />
+			<AppenderRef ref="LogToConsole" />
+		</Root>
+	</Loggers>
+</Configuration>
